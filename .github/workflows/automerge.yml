@@ -1,0 +1,33 @@
+name: Auto-Merge de Ballenita 🐳
+
+on:
+  push:
+    branches-ignore:
+      - main # evita que el workflow se dispare cuando está en la rama principal
+
+jobs:
+  automerge:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: write
+
+    steps:
+      - name: Crear pull request con GitHUB CLI
+        uses: actions/checkout@v4
+
+      - name: Crear y unir PR con GitHub CLI
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # 1. Creamos el PR y guardamos la URL en una variable
+          pr_url=$(gh pr create \
+            --title "🚀 Auto-PR: ${{ github.ref_name }}" \
+            --body "te quiero, gracias por tu esfuerzo ❤️" \
+            --base main \
+            --head ${{ github.ref_name }})
+
+          echo "PR creado en: $pr_url"
+
+          # 2. Hacemos el Merge inmediatamente
+          gh pr merge $pr_url --merge
