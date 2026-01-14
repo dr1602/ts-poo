@@ -1,4 +1,4 @@
-export class Animal {
+export abstract class Animal {
   constructor(protected name: string) {} //no se puede usar de forma externa pero se puede heredar
 
   move() {
@@ -32,7 +32,7 @@ export class Dog extends Animal {
   }
 }
 
-const firulais = new Animal('Firulais');
+const firulais = new Dog('Firulais', 'Marchudo');
 firulais.move();
 console.log(firulais.greeting());
 
