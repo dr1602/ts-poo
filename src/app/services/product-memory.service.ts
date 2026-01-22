@@ -6,12 +6,18 @@ export const products: Product[] = [];
 export class ProductMemoryService {
   private products: Product[] = [];
 
+  getAll() {
+    return this.products;
+  }
+
   create(data: CreateProductDto): Product {
+    const { categoryId, ...rest } = data;
+
     const newProduct: Product = {
-      ...data,
+      ...rest,
       id: 1241543,
       category: {
-        id: Number(data.categoryId),
+        id: Number(categoryId),
         name: 'Nombre',
         creationAt: new Date(2025, 12, 30),
         updatedAt: new Date(2025, 12, 30),
