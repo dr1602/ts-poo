@@ -12,8 +12,13 @@ export class ProductHttpService implements ProductService {
   }
 
   async update(id: Product['id'], changes: UpdateProductDto) {
-    const { data } = await axios.put(`${this.url}/${id}`, changes);
-    return data;
+    try {
+      const { data } = await axios.put(`${this.url}/${id}`, changes);
+      return data;
+    } catch (error) {
+      console.log('Error al actualizar en la Api:', error);
+      throw new Error('No se pudo actualizar el producto en el servidor');
+    }
   }
 
   async create(dto: CreateProductDto) {
