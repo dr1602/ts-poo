@@ -6,6 +6,16 @@ import { UpdateProductDto, CreateProductDto } from '../dtos/product.dto';
 
 export class ProductHttpService implements ProductService {
   private url = 'https://api.escuelajs.co/api/v1/products';
+  private static instace: ProductHttpService | null = null;
+  private constructor() {}
+
+  static getInstance(): ProductHttpService {
+    if (!ProductHttpService.instace) {
+      ProductHttpService.instace = new ProductHttpService();
+    }
+    return ProductHttpService.instace;
+  }
+
   async getAll() {
     const { data } = await axios.get<Product[]>(this.url);
     return data;

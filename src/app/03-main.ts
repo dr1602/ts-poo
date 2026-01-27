@@ -1,7 +1,7 @@
 import { ProductHttpService } from './services/product-http.service';
 
 (async () => {
-  const productService = new ProductHttpService();
+  const productService = ProductHttpService.getInstance();
 
   console.log('--'.repeat(10));
   console.log('getAll');
