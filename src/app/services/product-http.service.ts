@@ -6,14 +6,29 @@ import { UpdateProductDto, CreateProductDto } from '../dtos/product.dto';
 
 export class ProductHttpService implements ProductService {
   private url = 'https://api.escuelajs.co/api/v1/products';
+  private static instace: ProductHttpService | null = null;
+  private constructor() {}
+
+  static getInstance(): ProductHttpService {
+    if (!ProductHttpService.instace) {
+      ProductHttpService.instace = new ProductHttpService();
+    }
+    return ProductHttpService.instace;
+  }
+
   async getAll() {
     const { data } = await axios.get<Product[]>(this.url);
     return data;
   }
 
   async update(id: Product['id'], changes: UpdateProductDto) {
-    const { data } = await axios.put(`${this.url}/${id}`, changes);
-    return data;
+    try {
+      const { data } = await axios.put(`${this.url}/${id}`, changes);
+      return data;
+    } catch (error) {
+      console.log('Error al actualizar en la Api:', error);
+      throw new Error('No se pudo actualizar el producto en el servidor');
+    }
   }
 
   async create(dto: CreateProductDto) {
