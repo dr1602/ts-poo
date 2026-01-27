@@ -3,27 +3,31 @@ import { ProductHttpService } from './services/product-http.service';
 (async () => {
   const productService = ProductHttpService.getInstance();
 
-  console.log('--'.repeat(10));
-  console.log('getAll');
+  try {
+    console.log('--'.repeat(10));
+    console.log('getAll');
 
-  const products = await productService.getAll();
-  console.log(products.length);
-  console.log(products.map((item) => item.price));
+    const products = await productService.getAll();
+    console.log(products.length);
+    console.log(products.map((item) => item.price));
 
-  const productId = products[0]?.id as number;
+    const productId = products[0]?.id as number;
 
-  console.log('--'.repeat(10));
-  console.log('update');
+    console.log('--'.repeat(10));
+    console.log('update');
 
-  await productService.update(productId, {
-    price: 10000,
-    title: 'Nuevo Producto',
-    description: 'Nueva descripción.',
-  });
+    await productService.update(productId, {
+      price: 10000,
+      title: 'Nuevo Producto',
+      description: 'Nueva descripción.',
+    });
 
-  console.log('--'.repeat(10));
-  console.log('find');
+    console.log('--'.repeat(10));
+    console.log('find');
 
-  const product = await productService.findOne(productId);
-  console.log(product);
+    const product = await productService.findOne(productId);
+    console.log(product);
+  } catch (error) {
+    console.error(error);
+  }
 })();
