@@ -1,15 +1,27 @@
 import axios from 'axios';
 import { Category } from '../models/category.model';
 import { Product } from '../models/product.model';
+import { UpdateProductDto } from '../dtos/product.dto';
 
 export class BaseHttpService<TypeClass> {
   //   data: TypeClass[] = [];
 
-  constructor(private url: string) {}
+  constructor(protected url: string) {}
 
   async getAll(): Promise<TypeClass[]> {
     const { data } = await axios.get<TypeClass[]>(this.url);
     return data;
+  }
+
+  async update<ID, DTO>(id: ID, changes: DTO) {
+    try {
+      const array: TypeClass[] = [];
+      const { data } = await axios.put(`${this.url}/${id}`, changes);
+      return data;
+    } catch (error) {
+      console.log('Error al actualizar en la Api:', error);
+      throw new Error('No se pudo actualizar el producto en el servidor');
+    }
   }
 }
 
@@ -31,6 +43,9 @@ export class BaseHttpService<TypeClass> {
 
   const prodRes = await productService.getAll();
   console.log('products', prodRes.length);
+  productService.update<Product['id'], UpdateProductDto>(1, {
+    title: 'asa',
+  });
 
   const cartUrl = 'https://api.escuelajs.co/api/v1/categories';
   const categoryService = new BaseHttpService<Category>(cartUrl);
